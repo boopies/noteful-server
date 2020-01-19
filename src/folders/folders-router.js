@@ -2,13 +2,14 @@ const express = require('express')
 const xss = require('xss')
 const FoldersService = require('./folders-service')
 const path = require('path')
+const logger = require('../logger')
 
 const foldersRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeFolder = folder => ({
   id: folder.id,
-  title: folder.title,
+  title: xss(folder.title),
 })
 
 foldersRouter
@@ -74,7 +75,7 @@ foldersRouter
         })
         .catch(next)
       })
-      .patch(jsonParser, (req, res, next) => {
+  .patch(jsonParser, (req, res, next) => {
         const { title } = req.body
         const folderToUpdate = { title}
         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
@@ -85,7 +86,7 @@ foldersRouter
                }
              })
            }
-        FoldersService.updatefolder(
+        FoldersService.updateFolder(
           req.app.get('db'),
           req.params.folder_id,
           folderToUpdate

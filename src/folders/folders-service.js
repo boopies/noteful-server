@@ -3,13 +3,11 @@ const FoldersService = {
         return knex.select('*').from('noteful_folders')
         },
     insertFolder(knex, newFolder) {
-    return knex
-       .insert(newFolder)
-       .into('noteful_folders')
-       .returning('*')
-           .then(rows => {
-             return rows[0]
-           })
+            return knex
+                .insert(newFolder)
+                .into('noteful_folders')
+                .returning('*')
+                .then(rows => rows[0])
         },
     getById(knex, id) {
         return knex.from('noteful_folders')
@@ -26,7 +24,7 @@ const FoldersService = {
          return knex('noteful_folders')
             .where({ id })
             .update(newFolderFields)
-        },
+        }
 }
 
 module.exports = FoldersService
